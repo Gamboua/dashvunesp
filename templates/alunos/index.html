@@ -1,0 +1,125 @@
+{% extends "dashboard.html" %}
+
+{% block title-text %}Vunesp - Dashboard{% endblock %}
+{% block body-class %}hold-transition skin-blue sidebar-mini{% endblock %}
+
+{% block content %}
+<div class="wrapper">
+  
+  {% block header %}{{ block.super }}{% endblock %}
+  
+  {% with sidebar_active="alunos" %}
+    {% block sidebar %}{{ block.super }}{% endblock %}
+  {% endwith %}
+
+  <!-- Content Wrapper. Contains page content -->
+  <div class="content-wrapper">
+    <!-- Content Header (Page header) -->
+    <section class="content-header">
+      <h1>Alunos</h1>
+      <ol class="breadcrumb">
+        <li><a href="/alunos"><i class="fa fa-dashboard"></i> Alunos</a></li>
+      </ol>
+    </section>
+
+    <!-- Main content -->
+    <section class="content">
+     
+     {% block message %}{{ block.super }}{% endblock %}
+     
+      <div class="row">
+        <div class="col-xs-12">
+          <div class="box box-primary">
+            <div class="box-header">
+              <h3 class="box-title">Alunos cadastrados</h3>
+            </div>
+            <div class="box-body">
+              <div class="dataTables_wrapper form-inline dt-bootstrap">
+                {% if aluno %}
+                <table id="sort-table" class="table table-bordered table-hover dataTable">
+                  <thead>
+                    <tr>
+                      <th class="sorting_asc">ID</th>
+                      <th>Nome</th>
+                      <th>Ações</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {% for a in aluno %}
+                    <tr>
+                      <td>{{ a.id }}</td>
+                      <td>{{ a.nome }} {{ a.sobrenome }}</td>
+                      <td><a href="alunos/{{ a.id }}" class="btn btn-primary btn-xs">perfil</a></td>
+                    </tr>
+                    {% endfor %}
+                  </tbody>
+                  <tfoot>
+                    <tr>
+                      <th>ID</th>
+                      <th>Nome</th>
+                      <th>Ações</th>
+                    </tr>
+                  </tfoot>
+                </table>
+                {% else %}
+                  <p>Não encontramos nenhum aluno cadastrado.</p>
+                {% endif %}
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+    <!-- /.content -->
+  </div>
+  <!-- /.content-wrapper -->
+
+  <!-- Main Footer -->
+  <footer class="main-footer text-right">
+    <!-- Default to the left -->
+    <strong>Copyright &copy; 2016 Vunesp.</strong> Todos os direitos reservados.
+  </footer>
+  
+</div>
+<!-- /.wrapper -->
+{% endblock %}
+
+{% block scripts %}
+  {{ block.super }}
+  <script>
+    $(function () {
+      $('#sort-table').DataTable({
+        "paging": true,
+        "lengthChange": false,
+        "searching": false,
+        "ordering": true,
+        "info": true,
+        "autoWidth": false,
+        "language": {
+          "decimal":        ",",
+          "emptyTable":     "No data available in table",
+          "info":           "Mostrando de _START_ até _END_ - _TOTAL_ entradas",
+          "infoEmpty":      "Mostrando de 0 até 0 de 0 entradas",
+          "infoFiltered":   "(filtrado de _MAX_ entradas)",
+          "infoPostFix":    "",
+          "thousands":      ".",
+          "lengthMenu":     "Mostrar _MENU_ entradas",
+          "loadingRecords": "Carregando...",
+          "processing":     "Processando...",
+          "search":         "Procurar:",
+          "zeroRecords":    "Não foram encontrados registros",
+          "paginate": {
+              "first":      "Primeiro",
+              "last":       "Último",
+              "next":       "Próximo",
+              "previous":   "Anterior"
+          },
+          "aria": {
+              "sortAscending":  ": ativar para ordenar a coluna de modo crescente",
+              "sortDescending": ": ativar para ordenar a coluna de modo decrescente"
+          }
+        }
+      });
+    });
+  </script>
+{% endblock %}

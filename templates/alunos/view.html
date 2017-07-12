@@ -1,0 +1,146 @@
+{% extends "dashboard.html" %}
+
+{% block title-text %}Vunesp - Dashboard{% endblock %}
+{% block body-class %}hold-transition skin-blue sidebar-mini{% endblock %}
+
+{% block content %}
+<div class="wrapper">
+  {% block header %}{{ block.super }}{% endblock %}
+  
+  {% with sidebar_active="alunos" %}
+    {% block sidebar %}{{ block.super }}{% endblock %}
+  {% endwith %}
+  
+  <!-- Content Wrapper. Contains page content -->
+  <div class="content-wrapper">
+    <!-- Content Header (Page header) -->
+    <section class="content-header">
+      <h1>Alunos</h1>
+      <ol class="breadcrumb">
+        <li><a href="/alunos"><i class="fa fa-dashboard"></i> Alunos</a></li>
+        <li class="active"><a href="/alunos/{{ aluno.id }}">{{ aluno.nome }} {{ aluno.sobrenome }}</a></li>
+      </ol>
+    </section>
+
+    <!-- Main content -->
+    <section class="content">
+      
+      {% block message %}{{ block.super }}{% endblock %}
+      
+      <div class="row">
+        <div class="col-md-4">
+          <div class="box box-primary">
+            <div class="box-body box-profile">
+              <img class="profile-user-img img-responsive img-circle" src="/static/custom/img/user.jpg" alt="User profile picture">
+              <h3 class="profile-username text-center">{{ aluno.nome }} {{ aluno.sobrenome }}</h3>
+              <ul class="list-group list-group-unbordered">
+                <li class="list-group-item">
+                  <b>Email:</b> <span class="pull-right">{{ aluno.email }}</span>
+                </li>
+                <li class="list-group-item">
+                  <b>CPF:</b> <span class="pull-right">{{ aluno.cpf }}</span>
+                </li>
+                <li class="list-group-item">
+                  <b>Perfil:</b> <span class="pull-right">{% for ap in aluno.perfil_aluno.all %}<span class="label label-primary">{{ ap.nome }}</span>{% endfor %}</span>
+                </li>
+              </ul>
+            </div>
+          </div>
+        </div>
+        
+        <div class="col-md-8">
+          <div class="box box-primary">
+            <div class="box-header">
+              <h3 class="box-title">Cursos</h3>
+            </div>
+            <div class="box-body">
+              <table id="sort-table" class="table table-bordered table-hover dataTable">
+                <thead>
+                  <tr>
+                    <th class="sorting_asc">Curso</th>
+                    <th>Questionários</th>
+                    <th>Nota</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {% for am in matriculas %}
+                  <tr>
+                    <td>{{ am.curso.nome }}</td>
+                    <td>
+                      <div class="progress-group">
+                        <span class="progress-number">{{ am.min }}<b>/{{ am.max }}</b></span>
+                        <div class="progress sm">
+                          <div class="progress-bar {% if am.progresso != 100 %}progress-bar-yellow{% endif %}" style="width: {{ am.progresso }}%"></div>
+                        </div>
+                      </div>
+                    </td>
+                    <td>{{ am.nota|floatformat:2 }}</td>
+                  </tr>
+                  {% endfor %}
+                </tbody>
+                <tfoot>
+                  <tr>
+                    <th>Curso</th>
+                    <th>Questionários</th>
+                    <th>Nota</th>
+                  </tr>
+                </tfoot>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+    <!-- /.content -->
+  </div>
+  <!-- /.content-wrapper -->
+
+  <!-- Main Footer -->
+  <footer class="main-footer text-right">
+    <!-- Default to the left -->
+    <strong>Copyright &copy; 2016 Vunesp.</strong> Todos os direitos reservados.
+  </footer>
+  
+</div>
+<!-- /.wrapper -->
+{% endblock %}
+
+{% block scripts %}
+  {{ block.super }}
+  <script>
+    $(function () {
+      $('#sort-table').DataTable({
+        "paging": true,
+        "lengthChange": false,
+        "searching": false,
+        "ordering": true,
+        "info": true,
+        "autoWidth": false,
+        "language": {
+          "decimal":        ",",
+          "emptyTable":     "No data available in table",
+          "info":           "Mostrando de _START_ até _END_ - _TOTAL_ entradas",
+          "infoEmpty":      "Mostrando de 0 até 0 de 0 entradas",
+          "infoFiltered":   "(filtrado de _MAX_ entradas)",
+          "infoPostFix":    "",
+          "thousands":      ".",
+          "lengthMenu":     "Mostrar _MENU_ entradas",
+          "loadingRecords": "Carregando...",
+          "processing":     "Processando...",
+          "search":         "Procurar:",
+          "zeroRecords":    "Não foram encontrados registros",
+          "paginate": {
+              "first":      "Primeiro",
+              "last":       "Último",
+              "next":       "Próximo",
+              "previous":   "Anterior"
+          },
+          "aria": {
+              "sortAscending":  ": ativar para ordenar a coluna de modo crescente",
+              "sortDescending": ": ativar para ordenar a coluna de modo decrescente"
+          }
+        }
+      });
+    });
+  </script>
+{% endblock %}

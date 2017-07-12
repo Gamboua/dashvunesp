@@ -1,0 +1,105 @@
+{% extends "dashboard.html" %}
+
+{% block title-text %}Vunesp - Dashboard{% endblock %}
+{% block body-class %}hold-transition skin-blue sidebar-mini{% endblock %}
+
+{% block content %}
+<div class="wrapper">
+  
+  {% block header %}{{ block.super }}{% endblock %}
+  
+  {% with sidebar_active="cursos" %}
+    {% block sidebar %}{{ block.super }}{% endblock %}
+  {% endwith %}
+
+  <!-- Content Wrapper. Contains page content -->
+  <div class="content-wrapper">
+    
+    <!-- Content Header (Page header) -->
+    <section class="content-header">
+      <h1>Curso</h1>
+      <ol class="breadcrumb">
+        <li><a href="/cursos"><i class="fa fa-dashboard"></i> Cursos</a></li>
+        <li class="active"><a href="/cursos/{{ curso.id }}">{{ curso.nome }}</a></li>
+      </ol>
+    </section>
+
+    <!-- Main content -->
+    <section class="content">
+      {% block message %}{{ block.super }}{% endblock %}
+      <div class="row">
+        <div class="col-xs-12">
+          <div class="box box-primary">
+            <div class="box-header">
+              <h3 class="box-title">{{ curso.nome }}</h3>
+            </div>
+            <div class="box-body">
+              {% if matriculas %}
+              <table id="sort-table" class="table table-bordered table-hover dataTable">
+                <thead>
+                  <tr>
+                    <th class="sorting_asc">ID</th>
+                    <th>Nome</th>
+                    <th>Progresso</th>
+                    <th>Nota</th>
+                    <th>Ações</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {% for cm in matriculas %}
+                  <tr>
+                    <td>{{ cm.aluno.id }}</td>
+                    <td>{{ cm.aluno.nome }} {{ cm.aluno.sobrenome }}</td>
+                    <td>
+                      <div class="progress-group">
+                        <span class="progress-number">{{ cm.min }}<b>/{{ cm.max }}</b></span>
+                        <div class="progress sm">
+                          <div class="progress-bar {% if cm.progresso != 100 %}progress-bar-yellow{% endif %}" style="width: {{ cm.progresso }}%"></div>
+                        </div>
+                      </div>
+                    </td>
+                    <td>{{ cm.nota|floatformat:2 }}</td>
+                    <td><a href="alunos/{{ cm.aluno.id }}" class="btn btn-primary btn-xs">perfil</a></td>
+                  </tr>
+                  {% endfor %}
+                </tbody>
+                <tfoot>
+                  <tr>
+                    <th>ID</th>
+                    <th>Nome</th>
+                    <th>Progresso</th>
+                    <th>Nota</th>
+                    <th>Ações</th>
+                  </tr>
+                </tfoot>
+              </table>
+              {% else %}
+                <p>Não encontramos nenhum aluno cadastrado neste curso.</p>
+              {% endif %}
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+    <!-- /.content -->
+  </div>
+  <!-- /.content-wrapper -->
+
+  <!-- Main Footer -->
+  <footer class="main-footer text-right">
+    <!-- Default to the left -->
+    <strong>Copyright &copy; 2016 Vunesp.</strong> Todos os direitos reservados.
+  </footer>
+
+</div>
+<!-- ./wrapper -->
+{% endblock %}
+
+{% block scripts %}
+  {{ block.super }}
+  <script>
+    $(function () {
+      $('select[multiple]').select2();
+    });
+  </script>
+{% endblock %}

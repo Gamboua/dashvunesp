@@ -1,0 +1,22 @@
+.table tr td .progress-xs {
+  margin-top: 7px;
+}
+
+.progress {
+  background-color: #e0e0e0;
+}
+
+.box-header .box-title {
+  padding: 8px 0;
+}
+
+.progress-group .progress-number {
+  margin-top: -5px;
+  padding-left: 8px;
+}
+
+.list-group-unbordered>.list-group-item:after {
+  content: '';
+  display: table;
+  clear: both;
+}

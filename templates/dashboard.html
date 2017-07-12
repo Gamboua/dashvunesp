@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html>
+<head>
+  {% block head %}
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>{% block title-text %}{% endblock %}</title>
+    <!-- Tell the browser to be responsive to screen width -->
+    <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
+    <base href="http://{{ request.META.HTTP_HOST }}">
+    
+    <!-- Bootstrap 3.3.6 -->
+    <link rel="stylesheet" href="/static/bootstrap/css/bootstrap.min.css">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.5.0/css/font-awesome.min.css">
+    <!-- Ionicons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/ionicons/2.0.1/css/ionicons.min.css">
+    <!-- iCheck -->
+    <link rel="stylesheet" href="/static/plugins/iCheck/square/blue.css">
+    <!-- Datatables -->
+    <link rel="stylesheet" href="/static/plugins/datatables/dataTables.bootstrap.css">
+    <!-- Select2 -->
+    <link rel="stylesheet" href="/static/plugins/select2/select2.css">
+    <!-- Theme style -->
+    <link rel="stylesheet" href="/static/dist/css/AdminLTE.min.css">
+    <link rel="stylesheet" href="/static/dist/css/skins/skin-red.min.css">
+    <!-- Custom style -->
+    <link rel="stylesheet" href="/static/custom/css/main.css">
+
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+    <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
+    <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+    <![endif]-->
+  {% endblock %}
+</head>
+<body class="skin-red {% block body-class %}{% endblock %}">
+  {% block content %}
+    {% block header %}
+      <!-- Main Header -->
+      <header class="main-header">
+
+        <!-- Logo -->
+        <a href="cursos" class="logo">
+          <!-- mini logo for sidebar mini 50x50 pixels -->
+          <span class="logo-mini"><b>VSP</b></span>
+          <!-- logo for regular state and mobile devices -->
+          <span class="logo-lg"><b>VUNESP</b></span>
+        </a>
+
+         <!-- Header Navbar -->
+        <nav class="navbar navbar-static-top" role="navigation">
+          <!-- Sidebar toggle button-->
+          <a href="#" class="sidebar-toggle" data-toggle="offcanvas" role="button">
+            <span class="sr-only">Toggle navigation</span>
+          </a>
+          <!-- Navbar Right Menu -->
+          <div class="navbar-custom-menu">
+            <ul class="nav navbar-nav">
+              <li class="dropdown user user-menu">
+                <a href="#" class="dropdown-toggle" data-toggle="dropdown" aria-expanded="true">
+                  <img src="static/custom/img/user.jpg" class="user-image" alt="User Image">
+                  <span class="hidden-xs">{{ user }}</span>
+                </a>
+                <ul class="dropdown-menu">
+                  <!-- User image -->
+                  <li class="user-header">
+                    <img src="static/custom/img/user.jpg" class="img-circle" alt="User Image">
+
+                    <p>{{ user }}</p>
+                  </li>
+                  <!-- Menu Footer-->
+                  <li class="user-footer">
+                    <div class="pull-left">
+                      <a href="#" class="btn btn-default btn-flat">Alterar senha</a>
+                    </div>
+                    <div class="pull-right">
+                      <a href="/logout" class="btn btn-default btn-flat">Sair</a>
+                    </div>
+                  </li>
+                </ul>
+              </li>
+            </ul>
+          </div>
+        </nav>
+      </header>
+    {% endblock %}
+    {% block sidebar %}
+      <!-- Left side column. contains the logo and sidebar -->
+      <aside class="main-sidebar">
+        <!-- sidebar: style can be found in sidebar.less -->
+        <section class="sidebar">
+          <!-- Sidebar Menu -->
+          <ul class="sidebar-menu">
+            <li class="header">Navegação</li>
+            <li {% if sidebar_active == "cursos" %}class="active"{% endif %}><a href="cursos"><i class="fa fa-book"></i> <span>Cursos</span></a></li>
+            <li {% if sidebar_active == "perfis" %}class="active"{% endif %}><a href="perfil"><i class="fa fa-user"></i> <span>Perfis</span></a></li>
+            <li {% if sidebar_active == "alunos" %}class="active"{% endif %}><a href="alunos"><i class="fa fa-users"></i> <span>Alunos</span></a></li>
+          </ul>
+          <!-- /.sidebar-menu -->
+        </section>
+        <!-- /.sidebar -->
+      </aside>
+    {% endblock %}
+    {% block message %}
+      {% if messages %}
+      {% for message in messages %}
+      <div class="alert alert-{{message.level_tag}}">
+        <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+        <h4><i class="icon fa fa-check"></i> Alert!</h4>
+        {{ message.message }}
+      </div>
+      {% endfor %}
+      {% endif %}
+    {% endblock %}
+  {% endblock %}
+  {% block scripts %}
+    <!-- jQuery 2.2.3 -->
+    <script src="/static/plugins/jQuery/jquery-2.2.3.min.js"></script>
+    <!-- Bootstrap 3.3.6 -->
+    <script src="/static/bootstrap/js/bootstrap.min.js"></script>
+    <!-- AdminLTE App -->
+    <script src="/static/dist/js/app.min.js"></script>
+    <!-- iCheck -->
+    <script src="/static/plugins/iCheck/icheck.min.js"></script>
+    <!-- Datatables -->
+    <script src="/static/plugins/datatables/jquery.dataTables.min.js"></script>
+    <script src="/static/plugins/datatables/dataTables.bootstrap.min.js"></script>
+    <!-- Select2 -->
+    <script src="/static/plugins/select2/select2.full.min.js"></script>
+  {% endblock %}
+</body>
+</html>

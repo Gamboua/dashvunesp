@@ -1,0 +1,165 @@
+{% extends "dashboard.html" %}
+
+{% block title-text %}Vunesp - Dashboard{% endblock %}
+{% block body-class %}hold-transition skin-blue sidebar-mini{% endblock %}
+
+{% block content %}
+<div class="wrapper">
+  
+  {% block header %}{{ block.super }}{% endblock %}
+  
+  {% with sidebar_active="perfis" %}
+    {% block sidebar %}{{ block.super }}{% endblock %}
+  {% endwith %}
+  
+  <!-- Content Wrapper. Contains page content -->
+  <div class="content-wrapper">
+    <!-- Content Header (Page header) -->
+    <section class="content-header">
+      <h1>Perfis</h1>
+      <ol class="breadcrumb">
+        <li><a href="/perfil"><i class="fa fa-dashboard"></i> Perfis</a></li>
+      </ol>
+    </section>
+
+    <!-- Main content -->
+    <section class="content">
+      
+      {% block message %}{{ block.super }}{% endblock %}
+      
+      <div class="row">
+        <div class="col-xs-12">
+          <div class="box  box-primary">
+            <div class="box-header">
+              <h3 class="box-title">Perfis cadastrados</h3>
+              <a href="perfil/novo" class="btn btn-primary pull-right"><i class="fa fa-user-plus"></i> Adicionar</a>
+            </div>
+            <div class="box-body">
+              <div class="dataTables_wrapper form-inline dt-bootstrap">
+                {% if perfil %}
+                <table id="sort-table" class="table table-bordered table-hover dataTable" >
+                  <thead>
+                    <tr>
+                      <th class="sorting_asc">ID</th>
+                      <th>Nome</th>
+                      <th>Cursos</th>
+                      <th>Ações</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {% for p in perfil %}
+                    <tr>
+                      <td>{{ p.id }}</td>
+                      <td>{{ p.nome }}</td>
+                      <td>
+                        {% for pc in p.perfil_curso.all %}
+                          {{ pc.nome }} {% if not forloop.last %}-{% endif %}
+                        {% endfor %}
+                      </td>
+                      <td>
+                        <a href="perfil/{{ p.id }}" class="btn btn-warning btn-xs">editar</a>
+                        <button data-toggle="modal" data-target=".modal" data-name="{{ p.nome }}" data-url="perfil/excluir/{{ p.id }}" class="btn btn-danger btn-xs">excluir</button>
+                      </td>
+                    {% endfor %}
+                    </tr>
+                  </tbody>
+                  <tfoot>
+                    <tr>
+                      <th>ID</th>
+                      <th>Nome</th>
+                      <th>Cursos</th>
+                      <th>Ações</th>
+                    </tr>
+                  </tfoot>
+                </table>
+                {% else %}
+                  <p>Não encontramos nenhum perfil cadastrado, utilize o botão a direita para adicionar um.</p>
+                {% endif %}
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+    <!-- /.content -->
+  </div>
+  <!-- /.content-wrapper -->
+
+  <!-- Main Footer -->
+  <footer class="main-footer text-right">
+    <!-- Default to the left -->
+    <strong>Copyright &copy; 2016 Vunesp.</strong> Todos os direitos reservados.
+  </footer>
+
+  <div class="modal fade" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel">
+    <div class="modal-dialog modal-md" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+          <h4 class="modal-title">Atenção!</h4>
+        </div>
+        <div class="modal-body">
+          Tem certeza que gostaria de excluir o perfil: <strong class="name"></strong>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+          <a class="btn btn-danger url" href="">Excluir</a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>
+<!-- ./wrapper -->
+{% endblock %}
+
+{% block scripts %}
+  {{ block.super }}
+  <script>
+    $(function () {
+      $('#sort-table').DataTable({
+        "paging": true,
+        "lengthChange": false,
+        "searching": false,
+        "ordering": true,
+        "info": true,
+        "autoWidth": false,
+        "language": {
+          "decimal":        ",",
+          "emptyTable":     "No data available in table",
+          "info":           "Mostrando de _START_ até _END_ - _TOTAL_ entradas",
+          "infoEmpty":      "Mostrando de 0 até 0 de 0 entradas",
+          "infoFiltered":   "(filtrado de _MAX_ entradas)",
+          "infoPostFix":    "",
+          "thousands":      ".",
+          "lengthMenu":     "Mostrar _MENU_ entradas",
+          "loadingRecords": "Carregando...",
+          "processing":     "Processando...",
+          "search":         "Procurar:",
+          "zeroRecords":    "Não foram encontrados registros",
+          "paginate": {
+              "first":      "Primeiro",
+              "last":       "Último",
+              "next":       "Próximo",
+              "previous":   "Anterior"
+          },
+          "aria": {
+              "sortAscending":  ": ativar para ordenar a coluna de modo crescente",
+              "sortDescending": ": ativar para ordenar a coluna de modo decrescente"
+          }
+        }
+      });
+      
+      $('.modal').on('show.bs.modal', function (event) {
+        var button = $(event.relatedTarget);
+        var name = button.data('name');
+        var url = button.data('url');
+        console.log(name, url);
+        var modal = $(this);
+        modal.find('.modal-body .name').text(name);
+        modal.find('.modal-footer .url').attr('href', url);
+      });
+      
+    });
+  </script>
+{% endblock %}

@@ -1,0 +1,75 @@
+{% extends "dashboard.html" %}
+
+{% block title-text %}Vunesp - Dashboard{% endblock %}
+{% block body-class %}hold-transition skin-blue sidebar-mini{% endblock %}
+
+{% block content %}
+<div class="wrapper">
+  
+  {% block header %}{{ block.super }}{% endblock %}
+  
+  {% with sidebar_active="cursos" %}
+    {% block sidebar %}{{ block.super }}{% endblock %}
+  {% endwith %}
+
+  <!-- Content Wrapper. Contains page content -->
+  <div class="content-wrapper">
+    
+    <!-- Content Header (Page header) -->
+    <section class="content-header">
+      <h1>Curso</h1>
+      <ol class="breadcrumb">
+        <li><a href="/cursos"><i class="fa fa-dashboard"></i> Cursos</a></li>
+        <li class="active"><a href="/cursos/editar/{{ curso.id }}">Editar curso</a></li>
+      </ol>
+    </section>
+
+    <!-- Main content -->
+    <section class="content">
+      {% block message %}{{ block.super }}{% endblock %}
+      <div class="row">
+        <div class="col-xs-12">
+          <div class="box box-primary">
+            <div class="box-header">
+              <h3 class="box-title">Novo curso</h3>
+            </div>
+            <div class="box-body">
+              <form method="post">
+                {% csrf_token %}
+                <div class="box-body">
+                  <div class="form-group">
+                    <label for="nome">Nome do curso:</label>
+                    <input type="text" class="form-control" name="nome" placeholder="Nome" value="{{ curso.nome }}">
+                  </div>
+                </div>
+                <div class="box-footer">
+                  <button type="submit" class="btn btn-primary pull-right">editar</button>
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+    <!-- /.content -->
+  </div>
+  <!-- /.content-wrapper -->
+
+  <!-- Main Footer -->
+  <footer class="main-footer text-right">
+    <!-- Default to the left -->
+    <strong>Copyright &copy; 2016 Vunesp.</strong> Todos os direitos reservados.
+  </footer>
+
+</div>
+<!-- ./wrapper -->
+{% endblock %}
+
+{% block scripts %}
+  {{ block.super }}
+  <script>
+    $(function () {
+      $('select[multiple]').select2();
+    });
+  </script>
+{% endblock %}
